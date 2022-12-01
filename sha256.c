@@ -140,7 +140,7 @@ static void sha256_hash(sha256_t *ctx, const uint8_t *data)
 		s[idx[h]] += maj(s[idx[a]], s[idx[b]], s[idx[c]]);
 		s[idx[h]] += sum0(s[idx[a]]);
 	}
-
+	// (6.2.2.4)
 	for (size_t i = 0; i < 8; i++) {
 		ctx->state[i] += s[i];
 	}
