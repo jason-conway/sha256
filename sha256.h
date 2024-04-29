@@ -16,10 +16,10 @@
 #include <string.h>
 
 typedef struct sha256_t {
-	uint8_t data[64];
-	uint64_t block_bytes;
-	uint64_t bits_total;
-	uint32_t state[8];
+    uint8_t data[64];
+    uint64_t block_bytes;
+    uint64_t bits_total;
+    uint32_t state[8];
 } sha256_t;
 
 /**
