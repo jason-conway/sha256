@@ -6,7 +6,7 @@
  * @version 2022.11
  * @date 2021-12-15
  *
- * @copyright Copyright (c) 2021-2022 Jason Conway. All rights reserved.
+ * @copyright Copyright (c) 2021-2024 Jason Conway. All rights reserved.
  *
  */
 
@@ -120,8 +120,10 @@ static void sha256_hash(sha256_t *ctx, const uint8_t *data)
     };
 
     // Offsets for indexing into `s` in a way the resembles the spec
-    // Elements are initialized to their index + 1 and get decrimented prior computation
-    enum vars { a, b, c, d, e, f, g, h };
+    // Elements are initialized to their index + 1 and get decremented prior computation
+    enum vars {
+        a, b, c, d, e, f, g, h
+    };
     int32_t idx[] = {
         [a] = 1, [b] = 2, [c] = 3, [d] = 4, [e] = 5, [f] = 6, [g] = 7, [h] = 8
     };
@@ -129,7 +131,7 @@ static void sha256_hash(sha256_t *ctx, const uint8_t *data)
     // pragma gcc pls unroll
     for (size_t i = 0; i < 64; i++) {
         for (size_t j = 0; j < 8; j++) {
-            idx[j] = (idx[j] + 7) % 8; // Decriment with wrap
+            idx[j] = idx[j] ? idx[j] - 1 : 7;
         }
         // (6.2.2.3)
         s[idx[h]] += sum1(s[idx[e]]);
@@ -186,7 +188,7 @@ void sha256_finish(sha256_t *ctx, void *dst)
     // Copy into destination in reverse order
     for (size_t i = 0; i < 4; i++) {
         for (size_t j = 0; j < 8; j++) {
-            hash[(4 * j) + i] = (ctx->state[j] >> (24 - 8 * i)) & 0xff;
+            hash[(4 * j) + i] = (ctx->state[j] >> (24 - (8 * i))) & 0xff;
         }
     }
 }
